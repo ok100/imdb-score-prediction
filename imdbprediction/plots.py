@@ -11,6 +11,16 @@ def save_plot(plot, file_name):
     fig.savefig(file_name, bbox_inches='tight')
 
 
+def plot_correlation(df, file_name):
+    corr = df.corr()
+    mask = np.zeros_like(corr, dtype=np.bool)
+    mask[np.triu_indices_from(mask)] = True
+    cmap = sb.diverging_palette(220, 10, as_cmap=True)
+    _, ax = plt.subplots(figsize=(11, 9))
+    plot = sb.heatmap(corr, mask=mask, cmap=cmap, ax=ax, linewidths=0.5, cbar_kws={'shrink': .5})
+    save_plot(plot, file_name)
+
+
 sb.set(style='white')
 
 movies = pd.read_csv('data/movie_metadata.csv')
@@ -22,13 +32,13 @@ print(movies.describe())
 
 
 # Densityplots
-for col in num_data.columns:
-    try:
-        _, ax = plt.subplots(figsize=(11, 9))
-        plot = sb.distplot(num_data[col].notnull(), ax=ax)
-        save_plot(plot, 'density_{}.png'.format(col))
-    except:
-        continue
+# for col in num_data.columns:
+#     try:
+#         _, ax = plt.subplots(figsize=(11, 9))
+#         plot = sb.distplot(num_data[col].notnull(), ax=ax)
+#         save_plot(plot, 'density_{}.png'.format(col))
+#     except:
+#         continue
 
 
 # Boxplots
@@ -53,11 +63,3 @@ for col in num_data.columns:
 # save_plot(plot, 'null.png')
 
 
-# # Correlation
-# corr = movies.corr()
-# mask = np.zeros_like(corr, dtype=np.bool)
-# mask[np.triu_indices_from(mask)] = True
-# cmap = sb.diverging_palette(220, 10, as_cmap=True)
-# _, ax = plt.subplots(figsize=(11, 9))
-# plot = sb.heatmap(corr, mask=mask, cmap=cmap, ax=ax, linewidths=0.5, cbar_kws={'shrink': .5})
-# save_plot(plot, 'corr.png')

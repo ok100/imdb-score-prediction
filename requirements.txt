@@ -3,3 +3,7 @@ matplotlib
 numpy
 seaborn
 gensim
+stop_words
+nltk
+scikit-learn
+tabulate
